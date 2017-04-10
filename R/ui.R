@@ -110,7 +110,7 @@ targets = function(...){
 #' @param run logical, whether to actually run the Makefile or just write it.
 #' @param command character scalar, command to run to execute the Makefile.
 #' \code{command} and \code{args} will be used to call 
-#' \code{system2(command = command, args = args)} to run the \code{Makefile}.
+#' \code{system2(command = command, args = args)} to run the \code{Makefile}. Passing command = NULL will simply generate the yaml file.
 #' For example, to execute the \code{Makefile} using 4 parallel jobs
 #' while suppressing output to the console, use 
 #' \code{makefile(..., command = "make", args = c("--jobs=4", "-s"))}.
@@ -134,7 +134,9 @@ workflow = function(targets = NULL, make_these = "all", sources = NULL, packages
   write(as.yaml(yaml), remakefile)
   yaml_yesno_truefalse(remakefile)
   packages = unique(c("methods", packages))
-  makefile(targets = make_these, remakefiles = remakefile, 
+  if(!is.null(command)){
+    makefile(targets = make_these, remakefiles = remakefile, 
            prepend = prepend, remake_args = remake_args, run = run,
            command = command, args = args)
+  }
 }
